@@ -1,0 +1,14 @@
+#!/bin/bash
+RELEASE=$1
+INSTALL_TYPE=$2
+
+echo "Downloading registry from tarballs.openstack.org..."
+wget https://tarballs.openstack.org/kolla/images/centos-${INSTALL_TYPE}-registry-${RELEASE}.tar.gz
+echo "Registry downloaded, unpacking in /opt/kolla_registry"
+tar -xzf centos-${INSTALL_TYPE}-registry-${RELEASE}.tar.gz -C /opt/kolla_registry
+echo "Moving registry tar file to /opt/tar_registries"
+date_now=$(date '+%H-%Y%m%d')
+mv centos-${INSTALL_TYPE}-registry-${RELEASE}.tar.gz /opt/tar_registries/centos-${INSTALL_TYPE}-registry-${RELEASE}.tar.gz-$date_now
+echo "Restarting kolla registry"
+docker restart registry
+echo "Done"
